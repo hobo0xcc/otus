@@ -4,9 +4,11 @@
 #include "llvm/ADT/Optional.h"
 #include "llvm/ADT/STLExtras.h"
 #include "llvm/Analysis/EHPersonalities.h"
+#include "llvm/Analysis/TargetLibraryInfo.h"
 #include "llvm/CodeGen/GCMetadata.h"
 #include "llvm/CodeGen/GCStrategy.h"
 #include "llvm/CodeGen/LinkAllCodegenComponents.h"
+#include "llvm/CodeGen/MachineModuleInfo.h"
 #include "llvm/IR/BasicBlock.h"
 #include "llvm/IR/Constants.h"
 #include "llvm/IR/DerivedTypes.h"
@@ -27,12 +29,10 @@
 #include "llvm/Support/TargetRegistry.h"
 #include "llvm/Support/TargetSelect.h"
 #include "llvm/Support/raw_ostream.h"
+#include "llvm/Target/TargetLoweringObjectFile.h"
 #include "llvm/Target/TargetMachine.h"
 #include "llvm/Target/TargetOptions.h"
 #include "llvm/Transforms/IPO/PassManagerBuilder.h"
-#include "llvm/CodeGen/MachineModuleInfo.h"
-#include "llvm/Target/TargetLoweringObjectFile.h"
-#include "llvm/Analysis/TargetLibraryInfo.h"
 #include <memory>
 #include <stack>
 

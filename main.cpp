@@ -23,7 +23,8 @@ class Config {
     void print_usage() {
         std::cout << "Usage: otus [OPTIONS] [INPUT]" << std::endl;
         std::cout << "OPTIONS:" << std::endl;
-        std::cout << "\t-o <output>\t\tSpecify output object file." << std::endl;
+        std::cout << "\t-o <output>\t\tSpecify output object file."
+                  << std::endl;
     }
 
     void parse_argv(int argc, char **argv) {

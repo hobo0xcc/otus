@@ -432,7 +432,8 @@ void Codegen::generate_object_file(std::string output) {
     // pass.add(MMIWP);
     // pass.add(llvm::createFreeMachineFunctionPass());
     auto file_type = llvm::CGFT_ObjectFile;
-    if (target_machine->addPassesToEmitFile(pass, dest, nullptr, file_type, true)) {
+    if (target_machine->addPassesToEmitFile(pass, dest, nullptr, file_type,
+                                            true)) {
         llvm::errs() << "target_machine can't emit a file of this type";
         exit(1);
     }
