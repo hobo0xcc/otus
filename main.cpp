@@ -91,7 +91,7 @@ int main(int argc, char **argv) {
     std::vector<Node *> nodes = parser.parse_all();
     Typing typing(nodes);
     std::vector<Node *> typed_nodes = typing.infer();
-    IR ir(nodes);
+    IR ir(typed_nodes);
     // ir.print_ir();
     if (config.run_with_vm) {
         VM vm(ir);
