@@ -293,11 +293,11 @@ void Typing::unify(Type *x, Type *y, Subst &subst) {
         unify(x->ptr_to, y->ptr_to, subst);
     }
 
-    std::cout << "debug1" << std::endl;
-    x->print_type();
-    std::cout << std::endl;
-    y->print_type();
-    std::cout << std::endl;
+    // std::cout << "debug1" << std::endl;
+    // x->print_type();
+    // std::cout << std::endl;
+    // y->print_type();
+    // std::cout << std::endl;
 
     throw UNIFY_FAIL;
 }

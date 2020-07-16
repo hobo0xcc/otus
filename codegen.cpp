@@ -410,15 +410,12 @@ void Codegen::generate_object_file(std::string output) {
     llvm::TargetOptions opt = InitTargetOptionsFromCodeGenFlags();
 
     auto rm = llvm::Optional<llvm::Reloc::Model>();
-    auto target_machine =
+    TargetMachine *target_machine =
         target->createTargetMachine(target_triple, cpu, features, opt, rm);
+    module->setDataLayout(target_machine->createDataLayout());
 
     std::error_code ec;
     llvm::raw_fd_ostream dest(output, ec, llvm::sys::fs::OF_None);
-
-    llvm::LLVMTargetMachine &LLVMTM = static_cast<LLVMTargetMachine &>(*target_machine);
-    MachineModuleInfoWrapperPass *MMIWP =
-        new MachineModuleInfoWrapperPass(&LLVMTM);
 
     if (ec) {
         llvm::errs() << "Could not open file: " << ec.message();
@@ -427,17 +424,18 @@ void Codegen::generate_object_file(std::string output) {
 
     llvm::PassManagerBuilder *pm_builder =
         new (std::nothrow) llvm::PassManagerBuilder();
+
+    TargetLibraryInfoImpl TLII(Triple(module->getTargetTriple()));
     llvm::legacy::PassManager pass;
+    // pass.add(new TargetLibraryInfoWrapperPass(TLII));
+    // pass.add(&TPC);
     // pass.add(MMIWP);
     // pass.add(llvm::createFreeMachineFunctionPass());
     auto file_type = llvm::CGFT_ObjectFile;
-    if (target_machine->addPassesToEmitFile(pass, dest, nullptr, file_type, true, MMIWP)) {
+    if (target_machine->addPassesToEmitFile(pass, dest, nullptr, file_type, true)) {
         llvm::errs() << "target_machine can't emit a file of this type";
         exit(1);
     }
-
-    const_cast<TargetLoweringObjectFile *>(LLVMTM.getObjFileLowering())
-        ->Initialize(MMIWP->getMMI().getContext(), *target_machine);
 
     pass.run(*module);
     dest.flush();

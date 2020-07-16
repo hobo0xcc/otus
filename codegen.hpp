@@ -32,6 +32,7 @@
 #include "llvm/Transforms/IPO/PassManagerBuilder.h"
 #include "llvm/CodeGen/MachineModuleInfo.h"
 #include "llvm/Target/TargetLoweringObjectFile.h"
+#include "llvm/Analysis/TargetLibraryInfo.h"
 #include <memory>
 #include <stack>
 

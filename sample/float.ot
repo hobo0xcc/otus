@@ -1,0 +1,4 @@
+let extern print_float (f : float) : void
+
+let f_num = 3.5 +. 8.7 in
+print_float(f_num)

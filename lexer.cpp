@@ -131,7 +131,7 @@ Token Lexer::next() {
             int end = cur;
             std::string result = source.substr(begin, end - begin);
             return Token(type, result);
-        } else if (std::isalpha(curr())) {
+        } else if (std::isalpha(curr()) || curr() == '_') {
             std::string result = lexing(isident);
             TokenType type = TK_IDENT;
             if (result == "if")

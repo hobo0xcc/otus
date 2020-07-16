@@ -1,0 +1,11 @@
+let extern println (str : string) : void
+let extern run_collect : void
+
+let allocate_5 n =
+    if n >= 5 then n
+    else
+        let _ = new int in
+        allocate_5(n + 1)
+
+allocate_5(0)
+run_collect()

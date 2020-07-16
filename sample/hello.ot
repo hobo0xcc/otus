@@ -1,0 +1,3 @@
+let extern println (str : string) : void
+
+println("Hello, world!")
