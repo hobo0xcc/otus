@@ -1,6 +1,6 @@
 # otus
 
-otus is a toy functional programming language that has a GC and Type Inference as features, and use LLVM as backend.
+otus is a toy functional programming language that has a GC and Type Inference, and use LLVM as backend.
 
 # Build
 
