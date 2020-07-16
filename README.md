@@ -8,11 +8,11 @@ otus is a toy functional programming language that has a GC and Type Inference, 
 make
 ```
 
-# Run sample program
+# Run example program
 
 ```
 make
-cd sample
+cd examples
 ```
 
 ### Hello, world!
