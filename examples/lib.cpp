@@ -6,6 +6,10 @@ extern "C" {
         std::cout << str << std::endl;
     }
 
+    void print_int(int i) {
+        std::cout << i << std::endl;
+    }
+
     void print_float(double f) {
         std::cout << f << std::endl;
     }

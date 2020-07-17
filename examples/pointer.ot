@@ -1,0 +1,11 @@
+let extern print_int (i : int) : void
+
+let assign_int_to_ptr a = {
+    let ptr = new int in
+    ptr := a
+    
+    ptr
+}
+
+let p = assign_int_to_ptr(42) in
+print_int(#p)

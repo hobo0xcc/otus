@@ -1,0 +1,20 @@
+let extern println (str : string) : void
+let extern print_int (i : int) : void
+
+let fizzbuzz n =
+    if n > 100 then
+        0
+    else {
+        if n % 15 == 0 then
+            println("FizzBuzz")
+        else if n % 3 == 0 then
+            println("Fizz")
+        else if n % 5 == 0 then
+            println("Buzz")
+        else
+            print_int(n)
+
+        fizzbuzz(n + 1)
+    }
+
+fizzbuzz(1)

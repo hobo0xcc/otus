@@ -16,5 +16,17 @@ gc: gc.ot lib.o
 	../otus $< -o $@.o
 	$(CXX) $(CXXFLAGS) -o $@ $@.o lib.o ../runtime.o
 
+fib: fib.ot lib.o
+	../otus $< -o $@.o
+	$(CXX) $(CXXFLAGS) -o $@ $@.o lib.o ../runtime.o
+
+fizzbuzz: fizzbuzz.ot lib.o
+	../otus $< -o $@.o
+	$(CXX) $(CXXFLAGS) -o $@ $@.o lib.o ../runtime.o
+
+pointer: pointer.ot lib.o
+	../otus $< -o $@.o
+	$(CXX) $(CXXFLAGS) -o $@ $@.o lib.o ../runtime.o
+
 clean:
-	rm -rf hello float gc lib.o *.o
+	rm -rf hello float gc fib fizzbuzz pointer lib.o *.o

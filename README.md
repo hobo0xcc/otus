@@ -35,3 +35,24 @@ make float
 make gc
 ./gc
 ```
+
+### Fibinacci number
+**fib.ot**
+```
+make fib
+./fib
+```
+
+### FizzBuzz
+**fizzbuzz.ot**
+```
+make fizzbuzz
+./fizzbuzz
+```
+
+### Pointer
+**pointer.ot**
+```
+make pointer
+./pointer
+```

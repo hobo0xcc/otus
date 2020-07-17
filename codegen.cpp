@@ -4,7 +4,9 @@
 #include "parser.hpp"
 
 #include <atomic>
+#include <cstdio>
 #include <memory>
+#include <ostream>
 #include <system_error>
 
 Codegen::Codegen(IR ir) : builder(context), ir{ir} {
@@ -112,6 +114,8 @@ void Codegen::gen_instr(IRInstr instr, CodegenEnv *e) {
         } else {
             error("invalid operand");
         }
+    } else if (instr.type == IR_POP) {
+        stack.pop();
     } else if (instr.type == IR_STORE) {
         if (instr.operand->type != OBJ_NAME) {
             error("operand must be name");
@@ -199,8 +203,11 @@ void Codegen::gen_instr(IRInstr instr, CodegenEnv *e) {
 
         if (callee->getReturnType()->isVoidTy()) {
             builder.CreateCall(callee, argv);
+            stack.push(nullptr);
         } else {
             stack.push(builder.CreateCall(callee, argv, "calltmp"));
+            std::cout << name << std::endl;
+            std::flush(std::cout);
         }
     } else if (instr.type == IR_BR) {
         std::vector<IRInstr> else_code = code_stack.top();
@@ -237,8 +244,11 @@ void Codegen::gen_instr(IRInstr instr, CodegenEnv *e) {
 
         function->getBasicBlockList().push_back(merge_bb);
         builder.SetInsertPoint(merge_bb);
-        llvm::PHINode *PN =
-            builder.CreatePHI(llvm::Type::getInt32Ty(context), 2, "iftmp");
+        if (then_v == nullptr || else_v == nullptr) {
+            stack.push(nullptr);
+            return;
+        }
+        llvm::PHINode *PN = builder.CreatePHI(then_v->getType(), 2, "iftmp");
         PN->addIncoming(then_v, then_bb);
         PN->addIncoming(else_v, else_bb);
         stack.push(PN);

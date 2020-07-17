@@ -20,6 +20,7 @@ typedef enum IRInstrType {
     IR_MODF,
     IR_NOT,
     IR_PUSH,
+    IR_POP,
     IR_STORE,
     IR_LOAD,
     IR_STORE_PTR,

@@ -22,7 +22,7 @@ IR::IR(std::vector<Node *> nodes) {
     zero->number = 0;
     IRInstr push(IR_PUSH, zero);
     code.push_back(push);
-    IRInstr ret_zero(IR_RET, NULL);
+    IRInstr ret_zero(IR_RET, nullptr);
     code.push_back(ret_zero);
     Type *ret_type = new Type(TY_INT);
     IRFunc func(dummy_arg, dummy_types, ret_type, code, "main");
@@ -56,55 +56,55 @@ void IR::gen_ir(Node *node, std::vector<IRInstr> &code) {
         gen_ir(node->bin.lhs, code);
         gen_ir(node->bin.rhs, code);
         if (node->bin.op == OP_ADD) {
-            IRInstr instr(IR_ADD, NULL);
+            IRInstr instr(IR_ADD, nullptr);
             code.push_back(instr);
         } else if (node->bin.op == OP_SUB) {
-            IRInstr instr(IR_SUB, NULL);
+            IRInstr instr(IR_SUB, nullptr);
             code.push_back(instr);
         } else if (node->bin.op == OP_MUL) {
-            IRInstr instr(IR_MUL, NULL);
+            IRInstr instr(IR_MUL, nullptr);
             code.push_back(instr);
         } else if (node->bin.op == OP_DIV) {
-            IRInstr instr(IR_DIV, NULL);
+            IRInstr instr(IR_DIV, nullptr);
             code.push_back(instr);
         } else if (node->bin.op == OP_MOD) {
-            IRInstr instr(IR_MOD, NULL);
+            IRInstr instr(IR_MOD, nullptr);
             code.push_back(instr);
         } else if (node->bin.op == OP_ADDF) {
-            IRInstr instr(IR_ADDF, NULL);
+            IRInstr instr(IR_ADDF, nullptr);
             code.push_back(instr);
         } else if (node->bin.op == OP_SUBF) {
-            IRInstr instr(IR_SUBF, NULL);
+            IRInstr instr(IR_SUBF, nullptr);
             code.push_back(instr);
         } else if (node->bin.op == OP_MULF) {
-            IRInstr instr(IR_MULF, NULL);
+            IRInstr instr(IR_MULF, nullptr);
             code.push_back(instr);
         } else if (node->bin.op == OP_DIVF) {
-            IRInstr instr(IR_DIVF, NULL);
+            IRInstr instr(IR_DIVF, nullptr);
             code.push_back(instr);
         } else if (node->bin.op == OP_MODF) {
-            IRInstr instr(IR_MODF, NULL);
+            IRInstr instr(IR_MODF, nullptr);
             code.push_back(instr);
         } else if (node->bin.op == OP_GREATER) {
-            IRInstr instr(IR_GREATER, NULL);
+            IRInstr instr(IR_GREATER, nullptr);
             code.push_back(instr);
         } else if (node->bin.op == OP_LESS) {
-            IRInstr instr(IR_LESS, NULL);
+            IRInstr instr(IR_LESS, nullptr);
             code.push_back(instr);
         } else if (node->bin.op == OP_GREATER_EQ) {
-            IRInstr instr(IR_GREATER_EQ, NULL);
+            IRInstr instr(IR_GREATER_EQ, nullptr);
             code.push_back(instr);
         } else if (node->bin.op == OP_LESS_EQ) {
-            IRInstr instr(IR_LESS_EQ, NULL);
+            IRInstr instr(IR_LESS_EQ, nullptr);
             code.push_back(instr);
         } else if (node->bin.op == OP_EQ) {
-            IRInstr instr(IR_EQ, NULL);
+            IRInstr instr(IR_EQ, nullptr);
             code.push_back(instr);
         } else if (node->bin.op == OP_NOT_EQ) {
-            IRInstr instr(IR_NOT_EQ, NULL);
+            IRInstr instr(IR_NOT_EQ, nullptr);
             code.push_back(instr);
         } else if (node->bin.op == OP_PTR_ASSIGN) {
-            IRInstr instr(IR_STORE_PTR, NULL);
+            IRInstr instr(IR_STORE_PTR, nullptr);
             code.push_back(instr);
         } else {
             error("unknown binary operator");
@@ -112,10 +112,10 @@ void IR::gen_ir(Node *node, std::vector<IRInstr> &code) {
     } else if (node->type == ND_UNARY) {
         gen_ir(node->unary.expr, code);
         if (node->unary.op == OP_DEREF) {
-            IRInstr instr(IR_LOAD_PTR, NULL);
+            IRInstr instr(IR_LOAD_PTR, nullptr);
             code.push_back(instr);
         } else if (node->unary.op == OP_NOT) {
-            IRInstr instr(IR_NOT, NULL);
+            IRInstr instr(IR_NOT, nullptr);
             code.push_back(instr);
         } else {
             error("unknown unary operator");
@@ -126,7 +126,7 @@ void IR::gen_ir(Node *node, std::vector<IRInstr> &code) {
         // obj->number = 0;
         // IRInstr push_instr(IR_PUSH, obj);
         // code.push_back(push_instr);
-        // IRInstr instr(IR_NOT_EQ, NULL);
+        // IRInstr instr(IR_NOT_EQ, nullptr);
         // code.push_back(instr);
 
         std::vector<IRInstr> then_body;
@@ -143,7 +143,7 @@ void IR::gen_ir(Node *node, std::vector<IRInstr> &code) {
         code.push_back(then_instr);
         code.push_back(else_instr);
 
-        IRInstr br_instr(IR_BR, NULL);
+        IRInstr br_instr(IR_BR, nullptr);
         code.push_back(br_instr);
     } else if (node->type == ND_LET_IN) {
         gen_ir(node->let_in.body, code);
@@ -155,7 +155,7 @@ void IR::gen_ir(Node *node, std::vector<IRInstr> &code) {
     } else if (node->type == ND_LET_FUN) {
         std::vector<IRInstr> code;
         gen_ir(node->let_fun.body, code);
-        IRInstr ret_val(IR_RET, NULL);
+        IRInstr ret_val(IR_RET, nullptr);
         code.push_back(ret_val);
         std::vector<Type *> arg_types = node->type_kind->arg_types;
         Type *ret_type = node->type_kind->ret_type;
@@ -183,7 +183,8 @@ void IR::gen_ir(Node *node, std::vector<IRInstr> &code) {
         IRInstr call(IR_CALL, name);
         code.push_back(call);
     } else if (node->type == ND_COMPOUND) {
-        for (auto expr : node->compound.exprs) {
+        for (int i = 0; i < node->compound.exprs.size(); i++) {
+            Node *expr = node->compound.exprs[i];
             gen_ir(expr, code);
         }
     } else if (node->type == ND_NEW) {
