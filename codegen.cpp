@@ -21,7 +21,7 @@ void Codegen::gen_instr(IRInstr instr, CodegenEnv *e) {
         instr.type == IR_DIVF || instr.type == IR_MODF || instr.type == IR_EQ ||
         instr.type == IR_NOT_EQ || instr.type == IR_GREATER ||
         instr.type == IR_LESS || instr.type == IR_GREATER_EQ ||
-        instr.type == IR_LESS_EQ) {
+        instr.type == IR_LESS_EQ || instr.type == IR_LOGAND || instr.type == IR_LOGOR || instr.type == IR_BITAND || instr.type == IR_BITXOR || instr.type == IR_BITOR) {
         llvm::Value *rhs = stack.top();
         stack.pop();
         llvm::Value *lhs = stack.top();
@@ -91,6 +91,17 @@ void Codegen::gen_instr(IRInstr instr, CodegenEnv *e) {
             stack.push(
                 builder.CreateICmp(llvm::CmpInst::ICMP_SLE, lhs, rhs, "letmp"));
             break;
+        case IR_LOGAND:
+        case IR_BITAND:
+            stack.push(builder.CreateAnd(lhs, rhs, "andtmp"));
+            break;
+        case IR_LOGOR:
+        case IR_BITOR:
+            stack.push(builder.CreateOr(lhs, rhs, "ortmp"));
+            break;
+        case IR_BITXOR:
+            stack.push(builder.CreateXor(lhs, rhs, "xortmp"));
+            break;
         default:
             error("unknown operator in codegen");
         }
@@ -107,6 +118,8 @@ void Codegen::gen_instr(IRInstr instr, CodegenEnv *e) {
         } else if (instr.operand->type == OBJ_FLOAT) {
             stack.push(llvm::ConstantFP::get(
                 context, llvm::APFloat(instr.operand->float_number)));
+        } else if (instr.operand->type == OBJ_BOOL) {
+            stack.push(llvm::ConstantInt::get(context, llvm::APInt(8, instr.operand->bool_val)));
         } else if (instr.operand->type == OBJ_STRING) {
             llvm::Value *val =
                 builder.CreateGlobalStringPtr(instr.operand->str);

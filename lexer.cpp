@@ -148,6 +148,10 @@ Token Lexer::next() {
                 type = TK_EXTERN;
             else if (result == "new")
                 type = TK_NEW;
+            else if (result == "true")
+                type = TK_TRUE;
+            else if (result == "false")
+                type = TK_FALSE;
             return Token(type, result);
         } else if (curr() == '"') {
             read();
@@ -259,6 +263,23 @@ Token Lexer::next() {
         } else if (curr() == '#') {
             read();
             return Token(TK_SHARP, "#");
+        } else if (curr() == '&') {
+            read();
+            if (curr() == '&') {
+                read();
+                return Token(TK_LOGAND, "&&");
+            }
+            return Token(TK_BITAND, "&");
+        } else if (curr() == '|') {
+            read();
+            if (curr() == '|') {
+                read();
+                return Token(TK_LOGOR, "||");
+            }
+            return Token(TK_BITOR, "|");
+        } else if (curr() == '^') {
+            read();
+            return Token(TK_BITXOR, "^");
         } else {
             error("unknown character: %c", curr());
         }

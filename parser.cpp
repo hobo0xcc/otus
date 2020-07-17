@@ -133,6 +133,16 @@ Node *Parser::primary_expr() {
         Node *exp = expr();
         expect(TK_RPAREN);
         return exp;
+    } else if (match(TK_TRUE)) {
+        eat();
+        Node *b = new Node(ND_BOOL);
+        b->bool_val = true;
+        return b;
+    } else if (match(TK_FALSE)) {
+        eat();
+        Node *b = new Node(ND_BOOL);
+        b->bool_val = false;
+        return b;
     } else {
         error("unknown token: %s", curr().to_str().c_str());
         return NULL;
@@ -272,15 +282,115 @@ Node *Parser::equal_expr() {
     return lhs;
 }
 
-Node *Parser::assign_expr() {
+Node *Parser::bitwise_and_expr() {
     Node *lhs = equal_expr();
+    for (;;) {
+        if (match(TK_BITAND)) {
+            Node *expr = new Node(ND_BIN);
+            expr->bin.op = OP_BITAND;
+
+            eat();
+            Node *rhs = equal_expr();
+            expr->bin.lhs = lhs;
+            expr->bin.rhs = rhs;
+            lhs = expr;
+        } else {
+            break;
+        }
+    }
+
+    return lhs;
+}
+
+Node *Parser::bitwise_xor_expr() {
+    Node *lhs = bitwise_and_expr();
+    for (;;) {
+        if (match(TK_BITXOR)) {
+            Node *expr = new Node(ND_BIN);
+            expr->bin.op = OP_BITXOR;
+
+            eat();
+            Node *rhs = bitwise_and_expr();
+            expr->bin.lhs = lhs;
+            expr->bin.rhs = rhs;
+            lhs = expr;
+        } else {
+            break;
+        }
+    }
+
+    return lhs;
+}
+
+Node *Parser::bitwise_or_expr() {
+    Node *lhs = bitwise_xor_expr();
+    for (;;) {
+        if (match(TK_BITOR)) {
+            Node *expr = new Node(ND_BIN);
+            expr->bin.op = OP_BITOR;
+
+            eat();
+            Node *rhs = bitwise_xor_expr();
+            expr->bin.lhs = lhs;
+            expr->bin.rhs = rhs;
+            lhs = expr;
+        } else {
+            break;
+        }
+    }
+
+    return lhs;
+}
+
+Node *Parser::logical_and_expr() {
+    Node *lhs = bitwise_or_expr();
+    for (;;) {
+        if (match(TK_LOGAND)) {
+            Node *expr = new Node(ND_BIN);
+            expr->bin.op = OP_LOGAND;
+
+            eat();
+            Node *rhs = bitwise_or_expr();
+            expr->bin.lhs = lhs;
+            expr->bin.rhs = rhs;
+            lhs = expr;
+        } else {
+            break;
+        }
+    }
+
+    return lhs;
+}
+
+Node *Parser::logical_or_expr() {
+    Node *lhs = logical_and_expr();
+    for (;;) {
+        if (match(TK_LOGOR)) {
+            Node *expr = new Node(ND_BIN);
+            expr->bin.op = OP_LOGOR;
+
+            eat();
+            Node *rhs = logical_and_expr();
+            expr->bin.lhs = lhs;
+            expr->bin.rhs = rhs;
+            lhs = expr;
+        } else {
+            break;
+        }
+    }
+
+    return lhs;
+}
+
+Node *Parser::assign_expr() {
+    Node *lhs = logical_or_expr();
     for (;;) {
         if (match(TK_PTR_ASSIGN)) {
             Node *expr = new Node(ND_BIN);
             expr->bin.op = OP_PTR_ASSIGN;
 
             eat();
-            Node *rhs = equal_expr();
+            Node *rhs = logical_or_expr();
             expr->bin.lhs = lhs;
             expr->bin.rhs = rhs;
             lhs = expr;
@@ -462,6 +572,16 @@ void print_op(OpType type) {
         std::cout << "*";
     } else if (type == OP_PTR_ASSIGN) {
         std::cout << ":=";
+    } else if (type == OP_LOGAND) {
+        std::cout << "&&";
+    } else if (type == OP_LOGOR) {
+        std::cout << "||";
+    } else if (type == OP_BITAND) {
+        std::cout << "&";
+    } else if (type == OP_BITOR) {
+        std::cout << "|";
+    } else if (type == OP_BITXOR) {
+        std::cout << "^";
     } else {
         std::cout << "unknown op";
     }

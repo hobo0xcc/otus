@@ -34,6 +34,11 @@ typedef enum IRInstrType {
     IR_LESS,
     IR_GREATER_EQ,
     IR_LESS_EQ,
+    IR_LOGAND,
+    IR_LOGOR,
+    IR_BITAND,
+    IR_BITXOR,
+    IR_BITOR,
     IR_RET,
 } IRInstrType;
 
@@ -74,6 +79,7 @@ class IR {
 typedef enum ObjType {
     OBJ_INT,
     OBJ_FLOAT,
+    OBJ_BOOL,
     OBJ_NAME,
     OBJ_CODE,
     OBJ_STRING,
@@ -85,6 +91,7 @@ struct Obj {
     struct {
         int number;
         double float_number;
+        bool bool_val;
         size_t size;
         std::string name;
         std::vector<IRInstr> code;

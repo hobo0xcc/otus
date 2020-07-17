@@ -35,6 +35,8 @@ void Typing::annotate(Node *node, TypingEnv *e) {
         node->type_kind = ty;
     } else if (node->type == ND_FLOAT) {
         node->type_kind->kind = TY_FLOAT;
+    } else if (node->type == ND_BOOL) {
+        node->type_kind->kind = TY_BOOL;
     } else if (node->type == ND_BIN) {
         annotate(node->bin.lhs, e);
         annotate(node->bin.rhs, e);
@@ -129,7 +131,9 @@ void Typing::equate(Node *node, TypingEnv *e) {
         case OP_GREATER:
         case OP_GREATER_EQ:
         case OP_LESS:
-        case OP_LESS_EQ: {
+        case OP_LESS_EQ:
+        case OP_LOGAND:
+        case OP_LOGOR: {
             ty = bool_type;
             lhs_ty = node->bin.lhs->type_kind;
             rhs_ty = node->bin.rhs->type_kind;

@@ -47,6 +47,11 @@ void IR::gen_ir(Node *node, std::vector<IRInstr> &code) {
         obj->float_number = node->float_number;
         IRInstr instr(IR_PUSH, obj);
         code.push_back(instr);
+    } else if (node->type == ND_BOOL) {
+        Obj *obj = new Obj(OBJ_BOOL);
+        obj->bool_val = node->bool_val;
+        IRInstr instr(IR_PUSH, obj);
+        code.push_back(instr);
     } else if (node->type == ND_VAR) {
         Obj *obj = new Obj(OBJ_NAME);
         obj->name = node->ident;
@@ -105,6 +110,21 @@ void IR::gen_ir(Node *node, std::vector<IRInstr> &code) {
             code.push_back(instr);
         } else if (node->bin.op == OP_PTR_ASSIGN) {
             IRInstr instr(IR_STORE_PTR, nullptr);
+            code.push_back(instr);
+        } else if (node->bin.op == OP_LOGAND) {
+            IRInstr instr(IR_LOGAND, nullptr);
+            code.push_back(instr);
+        } else if (node->bin.op == OP_LOGOR) {
+            IRInstr instr(IR_LOGOR, nullptr);
+            code.push_back(instr);
+        } else if (node->bin.op == OP_BITAND) {
+            IRInstr instr(IR_BITAND, nullptr);
+            code.push_back(instr);
+        } else if (node->bin.op == OP_BITXOR) {
+            IRInstr instr(IR_BITXOR, nullptr);
+            code.push_back(instr);
+        } else if (node->bin.op == OP_BITOR) {
+            IRInstr instr(IR_BITOR, nullptr);
             code.push_back(instr);
         } else {
             error("unknown binary operator");
@@ -230,6 +250,16 @@ void IRInstr::print_instr() {
         std::cout << "EQ ";
     } else if (type == IR_NOT_EQ) {
         std::cout << "NOT_EQ ";
+    } else if (type == IR_LOGAND) {
+        std::cout << "LOGAND";
+    } else if (type == IR_LOGOR) {
+        std::cout << "LOGOR";
+    } else if (type == IR_BITAND) {
+        std::cout << "BITAND";
+    } else if (type == IR_BITXOR) {
+        std::cout << "BITXOR";
+    } else if (type == IR_BITOR) {
+        std::cout << "BITOR";
     } else if (type == IR_RET) {
         std::cout << "RET";
     }

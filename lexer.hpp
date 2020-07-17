@@ -46,6 +46,13 @@ typedef enum TokenType {
     TK_NOT,
     TK_PTR_ASSIGN,
     TK_SHARP,
+    TK_LOGAND,
+    TK_BITAND,
+    TK_LOGOR,
+    TK_BITOR,
+    TK_BITXOR,
+    TK_TRUE,
+    TK_FALSE,
 } TokenType;
 
 class Token {

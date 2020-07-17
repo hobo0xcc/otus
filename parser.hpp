@@ -11,6 +11,7 @@ typedef enum NodeType {
     ND_NUMBER,
     ND_FLOAT,
     ND_STRING,
+    ND_BOOL,
     ND_VAR,
     ND_BIN,
     ND_IF,
@@ -40,6 +41,11 @@ typedef enum OpType {
     OP_LESS_EQ,
     OP_EQ,
     OP_NOT_EQ,
+    OP_LOGAND,
+    OP_BITAND,
+    OP_LOGOR,
+    OP_BITOR,
+    OP_BITXOR,
     OP_PTR_ASSIGN,
     OP_DEREF,
     OP_NOT,
@@ -109,6 +115,7 @@ struct Node {
     struct {
         int number;
         double float_number;
+        bool bool_val;
         std::string ident;
         std::string str;
         struct {
@@ -222,6 +229,12 @@ struct Node {
         } else if (type == ND_UNARY) {
             print_op(unary.op);
             unary.expr->print_node();
+        } else if (type == ND_BOOL) {
+            if (bool_val) {
+                std::cout << "true";
+            } else {
+                std::cout << "false";
+            }
         } else {
             std::cout << "unknown";
         }
@@ -252,6 +265,11 @@ class Parser {
     Node *add_expr();
     Node *rel_expr();
     Node *equal_expr();
+    Node *bitwise_and_expr();
+    Node *bitwise_xor_expr();
+    Node* bitwise_or_expr();
+    Node *logical_and_expr();
+    Node *logical_or_expr();
     Node *assign_expr();
     Node *if_expr();
     Node *let_fun(std::string name);
