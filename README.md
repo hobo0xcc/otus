@@ -36,7 +36,7 @@ make gc
 ./gc
 ```
 
-### Fibinacci number
+### Fibonacci number
 **fib.ot**
 ```
 make fib
